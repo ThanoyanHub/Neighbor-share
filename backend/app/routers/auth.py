@@ -41,7 +41,6 @@ async def refresh(payload: RefreshRequest):
     uid = decode_token(payload.refresh_token, get_settings().jwt_refresh_secret_key, 'refresh')
     return TokenPair(access_token=create_access_token(uid), refresh_token=create_refresh_token(uid))
 
-
 @router.get('/me', response_model=UserPublic)
 async def me(current_user: dict = Depends(get_current_user)):
     return current_user
