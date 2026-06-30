@@ -59,6 +59,10 @@ export default function ToolDetails() {
             className="h-[460px] w-full rounded-lg object-cover shadow-soft"
             src={tool.image_url}
             alt={tool.name}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = 'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=1200&h=800&fit=crop';
+            }}
           />
 
           {!tool.is_available && (
