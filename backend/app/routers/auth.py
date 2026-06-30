@@ -46,6 +46,7 @@ async def me(current_user: dict = Depends(get_current_user)):
     return current_user
 
 
+
 @router.put('/me', response_model=UserPublic)
 async def update_me(payload: UserUpdate, current_user: dict = Depends(get_current_user), db: AsyncIOMotorDatabase = Depends(get_database)):
     updates = {k: v for k, v in payload.model_dump(exclude_unset=True).items() if v is not None}
@@ -57,3 +58,4 @@ async def update_me(payload: UserUpdate, current_user: dict = Depends(get_curren
         await db.reservations.update_many({'owner_id': user_id}, {'$set': {'owner_name': updates['full_name'], 'updated_at': updates['updated_at']}})
         await db.reservations.update_many({'borrower_id': user_id}, {'$set': {'borrower_name': updates['full_name'], 'updated_at': updates['updated_at']}})
     return serialize_doc(await db.users.find_one({'_id': oid(current_user['id'])}))
+
