@@ -2,6 +2,7 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 import { Hammer, LogOut, Shield, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import NotificationBell from '../components/NotificationBell';
+import Footer from '../components/Footer';
 
 export default function AppLayout() {
   const { user, logout, isAdmin } = useAuth();
@@ -12,7 +13,7 @@ export default function AppLayout() {
     (isActive ? 'bg-primary text-white' : 'text-secondary hover:bg-white');
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col bg-background">
     
       <header className="sticky top-0 z-20 border-b border-stone-200 bg-background/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
@@ -69,9 +70,11 @@ export default function AppLayout() {
       </header>
 
     
-      <main className="mx-auto max-w-7xl px-4 py-6">
+      <main className="mx-auto w-full max-w-7xl px-4 py-6 flex-1">
         <Outlet />
       </main>
+      
+      <Footer />
     </div>
   );
 }
