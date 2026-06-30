@@ -41,19 +41,7 @@ async def refresh(payload: RefreshRequest):
     uid = decode_token(payload.refresh_token, get_settings().jwt_refresh_secret_key, 'refresh')
     return TokenPair(access_token=create_access_token(uid), refresh_token=create_refresh_token(uid))
 
+
 @router.get('/me', response_model=UserPublic)
 async def me(current_user: dict = Depends(get_current_user)):
     return current_user
-
-
-@router.put('/me', response_model=UserPublic)
-async def update_me(payload: UserUpdate, current_user: dict = Depends(get_current_user), db: AsyncIOMotorDatabase = Depends(get_database)):
-    updates = {k: v for k, v in payload.model_dump(exclude_unset=True).items() if v is not None}
-    updates['updated_at'] = now_utc()
-    await db.users.update_one({'_id': oid(current_user['id'])}, {'$set': updates})
-    if 'full_name' in updates:
-        user_id = oid(current_user['id'])
-        await db.tools.update_many({'owner_id': user_id}, {'$set': {'owner_name': updates['full_name'], 'updated_at': updates['updated_at']}})
-        await db.reservations.update_many({'owner_id': user_id}, {'$set': {'owner_name': updates['full_name'], 'updated_at': updates['updated_at']}})
-        await db.reservations.update_many({'borrower_id': user_id}, {'$set': {'borrower_name': updates['full_name'], 'updated_at': updates['updated_at']}})
-    return serialize_doc(await db.users.find_one({'_id': oid(current_user['id'])}))
