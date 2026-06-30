@@ -20,6 +20,19 @@ frontend/  React/Vite/Tailwind client
 - Owner, borrower, and admin dashboards
 - Responsive UI with cards, skeletons, empty states, toast notifications, modal confirmation
 
+## .env setup
+
+APP_NAME=
+ENVIRONMENT=development
+MONGODB_URI=
+MONGODB_DB=neighborshare
+JWT_SECRET_KEY=
+JWT_REFRESH_SECRET_KEY=
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+REFRESH_TOKEN_EXPIRE_DAYS=7
+ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+
+
 ## Backend Setup
 
 ```bash
@@ -50,3 +63,4 @@ npm run dev
 ```
 
 The app runs at http://localhost:5173 by default.
+
