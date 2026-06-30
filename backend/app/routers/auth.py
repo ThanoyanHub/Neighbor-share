@@ -8,7 +8,6 @@ from app.database.object_id import oid, serialize_doc
 from app.models.common import now_utc
 from app.models.enums import Role
 from app.schemas.auth import AuthResponse, LoginRequest, RefreshRequest, TokenPair
-
 from app.schemas.users import UserCreate, UserPublic, UserUpdate
 
 router = APIRouter(prefix='/auth', tags=['Authentication'])
