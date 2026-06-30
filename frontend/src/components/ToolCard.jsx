@@ -15,7 +15,7 @@ export default function ToolCard({ tool }) {
           className="h-48 w-full object-cover"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = 'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600&h=400&fit=crop';
+            e.target.src = 'https://placehold.co/600x400/eeeeee/999999?text=Image+Not+Found';
           }}
         />
 
