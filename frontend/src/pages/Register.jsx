@@ -34,51 +34,77 @@ export default function Register() {
           Create your account
         </h1>
 
-        <input
-          className="input"
-          placeholder="Full name"
-          {...register('full_name', {
-            required: true,
-            minLength: 2,
-          })}
-        />
+        <div>
+          <input
+            className={`input w-full ${errors.full_name ? 'border-red-500' : ''}`}
+            placeholder="Full name"
+            {...register('full_name', {
+              required: "Full name is required",
+              minLength: { value: 2, message: "Minimum 2 characters required" },
+            })}
+          />
+          {errors.full_name && <p className="text-xs text-red-600 mt-1">{errors.full_name.message}</p>}
+        </div>
 
-        <input
-          className="input"
-          placeholder="Email"
-          type="email"
-          {...register('email', {
-            required: true,
-          })}
-        />
+        <div>
+          <input
+            className={`input w-full ${errors.email ? 'border-red-500' : ''}`}
+            placeholder="Email"
+            type="email"
+            {...register('email', {
+              required: "Email is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Invalid email address"
+              }
+            })}
+          />
+          {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>}
+        </div>
 
-        <input
-          className="input"
-          placeholder="Phone number"
-          {...register('phone_number', {
-            required: true,
-            pattern: /^\+?[0-9\-\s()]{7,20}$/,
-          })}
-        />
+        <div>
+          <input
+            className={`input w-full ${errors.phone_number ? 'border-red-500' : ''}`}
+            placeholder="Phone number"
+            {...register('phone_number', {
+              required: "Phone number is required",
+              pattern: {
+                value: /^\+?[0-9\-\s()]{7,20}$/,
+                message: "Invalid phone number format"
+              }
+            })}
+          />
+          {errors.phone_number && <p className="text-xs text-red-600 mt-1">{errors.phone_number.message}</p>}
+        </div>
 
-        <input
-          className="input"
-          placeholder="Password"
-          type="password"
-          {...register('password', {
-            required: true,
-            minLength: 8,
-          })}
-        />
+        <div>
+          <input
+            className={`input w-full ${errors.password ? 'border-red-500' : ''}`}
+            placeholder="Password"
+            type="password"
+            {...register('password', {
+              required: "Password is required",
+              minLength: { value: 8, message: "Minimum 8 characters required" },
+              pattern: {
+                value: /^(?=.*[A-Za-z])(?=.*\d).+$/,
+                message: "Password must contain at least one letter and one number"
+              }
+            })}
+          />
+          {errors.password && <p className="text-xs text-red-600 mt-1">{errors.password.message}</p>}
+        </div>
 
-        <textarea
-          className="input md:col-span-2"
-          placeholder="Address"
-          {...register('address', {
-            required: true,
-            minLength: 5,
-          })}
-        />
+        <div className="md:col-span-2">
+          <textarea
+            className={`input w-full ${errors.address ? 'border-red-500' : ''}`}
+            placeholder="Address"
+            {...register('address', {
+              required: "Address is required",
+              minLength: { value: 5, message: "Minimum 5 characters required" },
+            })}
+          />
+          {errors.address && <p className="text-xs text-red-600 mt-1">{errors.address.message}</p>}
+        </div>
 
         <button
           disabled={isSubmitting}
@@ -86,12 +112,6 @@ export default function Register() {
         >
           Register
         </button>
-
-        {Object.keys(errors).length > 0 && (
-          <p className="text-sm text-red-600 md:col-span-2">
-            Please check the required fields.
-          </p>
-        )}
       </form>
 
       <Toast
