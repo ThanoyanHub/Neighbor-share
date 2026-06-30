@@ -12,7 +12,7 @@ frontend/  React/Vite/Tailwind client
 
 - Register, login, logout, access tokens, refresh tokens, protected routes, and admin authorization
 - Browse tools with debounced keyword/category/price filters
-- Tool listing creation, edit-ready backend, delete, blackout dates, image URLs, owner controls
+- Tool listing creation, delete, blackout dates, image URLs, owner controls
 - Reservation workflow: Pending, Confirmed, Declined, Cancelled, Completed, Overdue
 - Conflict checking on approval using: new_start <= existing_end and new_end >= existing_start
 - Reviews only for completed borrower reservations
