@@ -49,18 +49,21 @@ export default function CSVImporter({ onImportComplete }) {
   const [fileName, setFileName] = useState('');
 
   const downloadTemplate = () => {
-    const csvContent = "data:text/csv;charset=utf-8," 
-      + "name,category,description,condition,daily_rate,image_url,blackout_dates\n"
+    const csvContent = "name,category,description,condition,daily_rate,image_url,blackout_dates\n"
       + 'Hammer,Power Tools,"Heavy hammer for general use",Good,15.50,,\n'
       + 'Lawn Mower,Gardening,"Gas powered push mower with bagger",Excellent,45.00,,2026-07-04\n'
       + 'Screwdriver Set,Carpentry,"12-piece magnetic precision set",New,10.00,,\n';
-    const encodedUri = encodeURI(csvContent);
+    
+    // Add BOM for Excel compatibility
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
+    link.setAttribute("href", url);
     link.setAttribute("download", "neighborshare_template.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const handleDrag = (e) => {
@@ -104,7 +107,13 @@ export default function CSVImporter({ onImportComplete }) {
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
-        const text = event.target.result;
+        let text = event.target.result;
+        
+        // Fix for old templates that had data URI embedded at the start
+        if (text.startsWith('data:text/csv;charset=utf-8,')) {
+          text = text.replace('data:text/csv;charset=utf-8,', '');
+        }
+        
         const parsedLines = parseCSV(text);
         
         if (parsedLines.length < 2) {
@@ -115,7 +124,7 @@ export default function CSVImporter({ onImportComplete }) {
         }
 
         const rawHeaders = parsedLines[0];
-        const headers = rawHeaders.map(h => h.trim().toLowerCase().replace(/[\s_]+/g, ''));
+        const headers = rawHeaders.map(h => h.trim().replace(/^\uFEFF/, '').toLowerCase().replace(/[\s_]+/g, ''));
 
         // Look up column indices
         const idxName = headers.findIndex(h => h === 'name' || h === 'toolname');
