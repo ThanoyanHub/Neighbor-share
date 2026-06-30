@@ -1,3 +1,9 @@
+from fastapi import APIRouter, Depends
+from motor.motor_asyncio import AsyncIOMotorDatabase
+from app.auth.security import require_admin
+from app.database.mongo import get_database
+from app.database.object_id import serialize_doc
+
 router = APIRouter(prefix='/admin', tags=['Admin'], dependencies=[Depends(require_admin)])
 
 @router.get('/users')
