@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Upload, Download, CheckCircle, AlertTriangle, Play, RefreshCw, X } from 'lucide-react';
 import api from '../services/api';
-import { categories, conditions } from '../utils/constants';
+import { categories, conditions, categoryImages } from '../utils/constants';
 
 
 // RFC 4180 standard compliant CSV parser (handles commas and quotes in values)
