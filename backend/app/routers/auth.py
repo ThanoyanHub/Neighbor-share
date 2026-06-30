@@ -45,6 +45,7 @@ async def refresh(payload: RefreshRequest):
 async def me(current_user: dict = Depends(get_current_user)):
     return current_user
 
+
 @router.put('/me', response_model=UserPublic)
 async def update_me(payload: UserUpdate, current_user: dict = Depends(get_current_user), db: AsyncIOMotorDatabase = Depends(get_database)):
     updates = {k: v for k, v in payload.model_dump(exclude_unset=True).items() if v is not None}
