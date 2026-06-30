@@ -18,3 +18,13 @@ async def tools(db: AsyncIOMotorDatabase = Depends(get_database)):
 @router.get('/reservations')
 async def reservations(db: AsyncIOMotorDatabase = Depends(get_database)):
     return [serialize_doc(d) for d in await db.reservations.find({}).sort('created_at', -1).to_list(None)]
+
+@router.get('/reviews')
+async def reviews(db: AsyncIOMotorDatabase = Depends(get_database)):
+    return [serialize_doc(d) for d in await db.reviews.find({}).sort('created_at', -1).to_list(None)]
+
+@router.get('/stats')
+async def stats(db: AsyncIOMotorDatabase = Depends(get_database)):
+    reservations = await db.reservations.count_documents({})
+    confirmed = await db.reservations.count_documents({'status': 'Confirmed'})
+    return {'users': await db.users.count_documents({}), 'tools': await db.tools.count_documents({}), 'reservations': reservations, 'confirmed_reservations': confirmed, 'reviews': await db.reviews.count_documents({}), 'notifications': await db.notifications.count_documents({})}
