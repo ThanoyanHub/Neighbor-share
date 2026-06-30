@@ -8,6 +8,7 @@ from app.database.object_id import oid, serialize_doc
 from app.models.common import now_utc
 from app.models.enums import Role
 from app.schemas.auth import AuthResponse, LoginRequest, RefreshRequest, TokenPair
+
 from app.schemas.users import UserCreate, UserPublic, UserUpdate
 
 router = APIRouter(prefix='/auth', tags=['Authentication'])
@@ -56,3 +57,4 @@ async def update_me(payload: UserUpdate, current_user: dict = Depends(get_curren
         await db.reservations.update_many({'owner_id': user_id}, {'$set': {'owner_name': updates['full_name'], 'updated_at': updates['updated_at']}})
         await db.reservations.update_many({'borrower_id': user_id}, {'$set': {'borrower_name': updates['full_name'], 'updated_at': updates['updated_at']}})
     return serialize_doc(await db.users.find_one({'_id': oid(current_user['id'])}))
+
