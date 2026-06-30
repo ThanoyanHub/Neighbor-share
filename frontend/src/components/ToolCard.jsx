@@ -13,6 +13,10 @@ export default function ToolCard({ tool }) {
           src={tool.image_url}
           alt={tool.name}
           className="h-48 w-full object-cover"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = 'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600&h=400&fit=crop';
+          }}
         />
 
         {!tool.is_available && (
