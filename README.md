@@ -19,3 +19,34 @@ frontend/  React/Vite/Tailwind client
 - In-app notifications and notification bell
 - Owner, borrower, and admin dashboards
 - Responsive UI with cards, skeletons, empty states, toast notifications, modal confirmation
+
+## Backend Setup
+
+```bash
+cd backend
+python -m venv .venv
+. .venv/Scripts/activate   # Windows PowerShell: .venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+copy .env.example .env
+```
+
+Edit `.env` with your MongoDB Atlas URI and strong JWT secrets.
+
+Run the API:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+OpenAPI documentation will be available at http://localhost:8000/docs.
+
+## Frontend Setup
+
+```bash
+cd frontend
+npm install
+copy .env.example .env
+npm run dev
+```
+
+The app runs at http://localhost:5173 by default.
